@@ -2,9 +2,20 @@
   margin: 0;
   padding: 0;
   box-sizing: border-box;
+
+  &::-webkit-scrollbar {
+    width: 8px;
+  }
+  &::-webkit-scrollbar-thumb {
+    border-radius: 8px;
+    background: #bde495;
+    height: 1%;
+  }
+  &::-webkit-scrollbar-track {
+    background: #fff;
+  }
 }
 
-/* Body와 HTML 기본 설정 */
 html,
 body {
   width: 100%;

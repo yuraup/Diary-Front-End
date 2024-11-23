@@ -9,7 +9,7 @@ const TransformationCompletePage = () => {
   return (
     <CompleteContainer>
       <h1>변환이 완료되었습니다</h1>
-      <Emoji src={LoveCat} alt="변환 완료 이모지" />
+      <Emoji src={LoveCat} alt="변환완료" />
       <ConfirmButton onClick={() => navigate('/result')}>확인해 보기</ConfirmButton>
     </CompleteContainer>
   );

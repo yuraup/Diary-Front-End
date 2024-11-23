@@ -7,7 +7,7 @@ const DiarySaveCompletePage = () => {
 
   return (
     <SaveCompleteContainer>
-      <Emoji src={LoveCat} alt="저장 완료 이모지" />
+      <Emoji src={LoveCat} alt="저장완료" />
       <Message>오늘의 일기가 이미지로 저장됐어요!</Message>
       <ConfirmButton onClick={() => navigate('/')}>확인</ConfirmButton>
     </SaveCompleteContainer>

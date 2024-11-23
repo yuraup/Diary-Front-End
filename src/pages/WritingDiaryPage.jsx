@@ -41,7 +41,6 @@ const WritingDiaryPage = () => {
   );
 };
 
-// 스타일 컴포넌트 정의
 const FullPageContainer = styled.div`
   width: 100vw;
   height: 100vh;
@@ -50,13 +49,13 @@ const FullPageContainer = styled.div`
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  position: relative; /* Header와 Emoji 위치를 조정하기 위해 사용 */
+  position: relative;
 `;
 
 const Header = styled.div`
   position: absolute;
   top: 100px;
-  left: 100px; /* 상단 왼쪽 정렬 */
+  left: 100px;
   text-align: left;
 
   h1 {
@@ -68,8 +67,8 @@ const Header = styled.div`
 
 const Emoji = styled.img`
   position: absolute;
-  top: 100px; /* 상단 여백 */
-  right: 100px; /* 오른쪽 여백 */
+  top: 100px;
+  right: 100px;
   width: 150px;
   height: 150px;
 `;

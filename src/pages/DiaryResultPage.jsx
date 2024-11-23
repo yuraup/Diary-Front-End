@@ -9,7 +9,7 @@ const DiaryResultPage = () => {
   const navigate = useNavigate();
 
   const diaryText =
-    'AI가 긍정적으로 변환한 일기 내용. 변환된 일기가 여기에 표시됨. ex) 오늘 하루는 정말 행복하고 보람찬 하루였습니다';
+    'AI가 긍정적으로 변환한 일기 내용. 변환된 일기가 여기에 표시됨. ex) 오늘 하루는 정말 행복하고 보람찬 하루였습니다. 오늘의 일기입니다.';
 
   return (
     <ResultContainer>

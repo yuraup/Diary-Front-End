@@ -2,7 +2,7 @@
 import styled from 'styled-components';
 
 const ImageModal = ({ isOpen, onClose, imgSrc }) => {
-  if (!isOpen) return null; // 모달이 열려있지 않으면 렌더링하지 않음
+  if (!isOpen) return null;
 
   return (
     <ModalBackground onClick={onClose}>
@@ -15,7 +15,6 @@ const ImageModal = ({ isOpen, onClose, imgSrc }) => {
 
 export default ImageModal;
 
-// 모달 배경
 const ModalBackground = styled.div`
   position: fixed;
   top: 0;
@@ -29,7 +28,6 @@ const ModalBackground = styled.div`
   z-index: 1000;
 `;
 
-// 모달 내부 컨텐츠
 const ModalContent = styled.div`
   display: flex;
   justify-content: center;

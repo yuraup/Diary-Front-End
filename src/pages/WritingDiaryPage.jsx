@@ -1,14 +1,34 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import styled from 'styled-components';
 import { useNavigate } from 'react-router-dom';
-import emojiImage from '../assets/CryingCat.svg';
 import Loading from '../components/Loading';
+import CryingCat from '../assets/CryingCat.svg';
+import FearCat from '../assets/FearCat.svg';
+import JoyCat from '../assets/JoyCat.svg';
+import SmilingCat from '../assets/SmilingCat.svg';
 
 const WritingDiaryPage = () => {
   const navigate = useNavigate();
   const [title, setTitle] = useState('');
   const [content, setContent] = useState('');
   const [loading, setLoading] = useState(false);
+
+  // Emoji 애니메이션
+  const [currentEmoji, setCurrentEmoji] = useState(0);
+  const [fade, setFade] = useState(false);
+  const emojiImages = [CryingCat, FearCat, JoyCat, SmilingCat];
+
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setFade(true);
+      setTimeout(() => {
+        setCurrentEmoji((prevIndex) => (prevIndex + 1) % emojiImages.length);
+        setFade(false);
+      }, 1000);
+    }, 3000);
+
+    return () => clearInterval(interval);
+  }, [emojiImages.length]);
 
   const handleTitleChange = (e) => {
     setTitle(e.target.value);
@@ -23,35 +43,26 @@ const WritingDiaryPage = () => {
     setLoading(true);
 
     try {
-      // API 호출 (로딩 페이지 예시로 임시 딜레이 추가)
       await new Promise((resolve) => setTimeout(resolve, 2000));
-
-      // 실제 API 호출 로직
-      // const response = await fetch('YOUR_API_ENDPOINT', {
-      //   method: 'POST',
-      //   headers: { 'Content-Type': 'application/json' },
-      //   body: JSON.stringify({ title, content }),
-      // });
-      // const result = await response.json();
 
       console.log('Diary Title:', title);
       console.log('Diary Content:', content);
 
-      // 로딩 완료 후 다음 페이지로 이동
       navigate('/loading-complete');
     } catch (error) {
       console.error('API 호출 실패:', error);
     } finally {
-      setLoading(false); // 로딩 종료
+      setLoading(false);
     }
   };
 
   return (
     <>
-      {loading && <Loading />}{' '}
-      {/* 로딩 상태가 true일 때만 Loading 컴포넌트 렌더링 */}
+      {loading && <Loading />}
       <FullPageContainer>
-        <Emoji src={emojiImage} alt="감정 이모지" />
+        <EmojiContainer fade={fade}>
+          <Emoji src={emojiImages[currentEmoji]} alt="감정 이모지" />
+        </EmojiContainer>
         <Header>오늘의 하루를 감정적으로 정리해 보세요</Header>
         <WritingBox>
           <Title
@@ -71,10 +82,11 @@ const WritingDiaryPage = () => {
     </>
   );
 };
+
 const FullPageContainer = styled.div`
   width: 100vw;
   height: 100vh;
-  background-color: #d9f7be; /* 배경색 */
+  background-color: #d9f7be;
 
   display: flex;
   flex-direction: column;
@@ -82,9 +94,16 @@ const FullPageContainer = styled.div`
   align-items: center;
 `;
 
-const Emoji = styled.img`
+const EmojiContainer = styled.div`
   width: 80px;
   height: 80px;
+  transition: opacity 1s ease-in-out;
+  opacity: ${(props) => (props.fade ? 0 : 1)};
+`;
+
+const Emoji = styled.img`
+  width: 100%;
+  height: 100%;
 `;
 
 const Header = styled.div`
@@ -94,7 +113,6 @@ const Header = styled.div`
   font-weight: 700;
   letter-spacing: 1.04px;
   margin: 1% 0 3% 0;
-  /* margin-bottom: 40px; */
 `;
 
 const WritingBox = styled.div`
@@ -105,6 +123,7 @@ const WritingBox = styled.div`
   align-items: center;
   margin-bottom: 2%;
 `;
+
 const Title = styled.input`
   width: 60%;
   height: 50px;

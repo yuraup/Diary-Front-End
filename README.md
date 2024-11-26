@@ -16,18 +16,12 @@ npm run dev
 • 주요 개발 언어 및 프레임워크
 - React.js, JavaScript
 
+• 데이터 패치
+- Axios
+
 • 페이지 스타일링
 - Styled-Components
 ```
-
-## Git branch & Git Flow
-
-| 브랜치명          | 작업 내용                  |
-| ----------------- | -------------------------- |
-| main              | 최종 브랜치                |
-| develop (default) | 개발 브랜치                |
-| feature           | 기능 작업 브랜치           |
-| hotfix            | 배포 이후 문제 수정 브랜치 |
 
 <br/>
 

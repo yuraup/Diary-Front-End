@@ -1,18 +1,39 @@
-import { useState } from 'react';
+import { useState, useRef } from 'react';
 import styled from 'styled-components';
 import ImageModal from '../components/ResultModal';
 import exResultImg from '../assets/ex_result.png'; 
 import { useNavigate } from 'react-router-dom';
+import html2canvas from 'html2canvas';
 
 const DiaryResultPage = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const screenshotRef = useRef(null);
   const navigate = useNavigate();
 
   const diaryText =
     'AI가 긍정적으로 변환한 일기 내용. 변환된 일기가 여기에 표시됨. ex) 오늘 하루는 정말 행복하고 보람찬 하루였습니다. 오늘의 일기입니다.';
 
+  const handleSaveDiary = async () => {
+    if (screenshotRef.current) {
+      const canvas = await html2canvas(screenshotRef.current);
+      const image = canvas.toDataURL('image/png');
+
+      const today = new Date();
+      const yyyy = today.getFullYear();
+      const mm = String(today.getMonth() + 1).padStart(2, '0');
+      const dd = String(today.getDate()).padStart(2, '0');
+      const formattedDate = `${yyyy}-${mm}-${dd}`;
+
+      const link = document.createElement('a');
+      link.href = image;
+      link.download = `${formattedDate}의 일기.png`;
+      link.click();
+
+      navigate('/save-complete');
+    }
+  };
   return (
-    <ResultContainer>
+    <ResultContainer ref={screenshotRef}>
       <h1>긍정적으로 변환된 일기</h1>
       <ContentSection>
         <TextSection>
@@ -32,7 +53,7 @@ const DiaryResultPage = () => {
         imgSrc={exResultImg}
       />
       <ButtonSection>
-        <ActionButton onClick={() => navigate('/save-complete')}>
+        <ActionButton onClick={handleSaveDiary}>
           일기 저장하기
         </ActionButton>
         <ActionButton onClick={() => navigate('/diary-list')}>
@@ -46,7 +67,7 @@ const DiaryResultPage = () => {
 const ResultContainer = styled.div`
   width: 100vw;
   height: 100vh;
-  background-color: #d9f7be; /* 배경색 */
+  background-color: #d9f7be;
   display: flex;
   flex-direction: column;
   justify-content: center;

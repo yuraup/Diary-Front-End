@@ -8,7 +8,6 @@ import DiarySaveCompletePage from './pages/DiarySaveCompletePage';
 import TransformCompletePage from './pages/TransformCompletePage';
 import './App.css';
 
-// createBrowserRouter로 라우트 정의
 const router = createBrowserRouter([
   { path: '/', element: <Main /> },
   { path: '/write', element: <WritingDiary /> },

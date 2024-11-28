@@ -1,36 +1,43 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 import backHalfCircle from '../assets/BackHalfCircle.svg';
 import DetailModal from '../components/DetailModal';
-import dog from '../assets/dog.png';
-import cat from '../assets/cat.png';
+import { getDiaryList, getDetailDiary } from '../api/Diary';
 
 const DiaryListPage = () => {
   const navigate = useNavigate();
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const [selectedImgSrc, setSelectedImgSrc] = useState('');
+  const [diaryList, setDiaryList] = useState([]);
+  const [selectedDiary, setSelectedDiary] = useState(null);
 
-  const [diaryData] = useState([
-    { id: 1, content: '일기 내용 1', imgAlt: '일기 이미지 1', src: dog },
-    { id: 2, content: '일기 내용 2', imgAlt: '일기 이미지 2', src: cat },
-    { id: 3, content: '일기 내용 3', imgAlt: '일기 이미지 3', src: dog },
-    { id: 4, content: '일기 내용 4', imgAlt: '일기 이미지 4', src: dog },
-    { id: 5, content: '일기 내용 5', imgAlt: '일기 이미지 5', src: dog },
-  ]); // 다이어리 더미 데이터
-
-  const openModal = (imgSrc) => {
-    setSelectedImgSrc(imgSrc);
-    setIsModalOpen(true);
+  const openModal = async (diaryId) => {
+    try {
+      const detail = await getDetailDiary(diaryId);
+      setSelectedDiary(detail);
+      setIsModalOpen(true);
+    } catch (err) {
+      console.log(err);
+    }
   };
+
+  useEffect(() => {
+    const fetchList = async () => {
+      const list = await getDiaryList();
+      if (list) {
+        setDiaryList(list);
+      }
+    };
+    fetchList();
+  }, []);
 
   return (
     <DiaryListWrapper>
       {isModalOpen && (
-        <DetailModal setIsModalOpen={setIsModalOpen} imgSrc={selectedImgSrc} />
+        <DetailModal setIsModalOpen={setIsModalOpen} diary={selectedDiary} />
       )}
       <LeftBtn
-        leftmove="15%"
+        $leftmove="15%"
         onClick={() => {
           navigate('/');
         }}
@@ -41,16 +48,19 @@ const DiaryListPage = () => {
         <BackHalfCircle src={backHalfCircle} alt="반원배경이미지" />
         <h1>모두의 일기장</h1>
         <ListContainer>
-          {diaryData.map((diary) => (
-            <ListBox key={diary.id} onClick={() => openModal(diary.src)}>
-              <p>{diary.content}</p>
-              <ListImg alt={diary.imgAlt} src={diary.src} />
+          {diaryList.map((diary) => (
+            <ListBox
+              key={diary.diaryId}
+              onClick={() => openModal(diary.diaryId)}
+            >
+              <p>{diary.title}</p>
+              <ListImg alt="일기 이미지" src={diary.imgURL} />
             </ListBox>
           ))}
         </ListContainer>
       </ListWrapper>
       <RightBtn
-        right="15%"
+        $right="15%"
         onClick={() => {
           navigate('/write');
         }}
@@ -75,8 +85,8 @@ const LeftBtn = styled.p`
   font-size: 17px;
   font-weight: 600;
   cursor: pointer;
-  left: ${(props) => props.leftmove || '0'};
-  right: ${(props) => props.right || '0'};
+  left: ${(props) => props.$leftmove || '0'};
+  right: ${(props) => props.$right || '0'};
 `;
 
 const RightBtn = styled.p`
@@ -85,7 +95,7 @@ const RightBtn = styled.p`
   font-size: 17px;
   font-weight: 600;
   cursor: pointer;
-  right: ${(props) => props.right || '0'};
+  right: ${(props) => props.$right || '0'};
 `;
 const ListWrapper = styled.div`
   display: flex;

@@ -1,7 +1,6 @@
 import { createBrowserRouter, RouterProvider } from 'react-router-dom';
 import Main from './pages/MainPage';
 import DiaryList from './pages/DiaryListPage';
-import DetailDiary from './pages/DetailDiaryPage';
 import WritingDiary from './pages/WritingDiaryPage';
 import DiaryResultPage from './pages/DiaryResultPage';
 import DiarySaveCompletePage from './pages/DiarySaveCompletePage';
@@ -14,9 +13,7 @@ const router = createBrowserRouter([
   { path: '/loading-complete', element: <TransformCompletePage /> },
   { path: '/result', element: <DiaryResultPage /> },
   { path: '/save-complete', element: <DiarySaveCompletePage /> },
-  { path: '/diary/:id', element: <DetailDiary /> },
   { path: '/diary-list', element: <DiaryList /> },
-  { path: '/diary-list/:id', element: <DetailDiary /> },
 ]);
 
 const App = () => {

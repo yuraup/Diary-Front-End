@@ -37,7 +37,7 @@ const DiaryListPage = () => {
         <DetailModal setIsModalOpen={setIsModalOpen} diary={selectedDiary} />
       )}
       <LeftBtn
-        leftmove="15%"
+        $leftmove="15%"
         onClick={() => {
           navigate('/');
         }}
@@ -60,7 +60,7 @@ const DiaryListPage = () => {
         </ListContainer>
       </ListWrapper>
       <RightBtn
-        right="15%"
+        $right="15%"
         onClick={() => {
           navigate('/write');
         }}
@@ -85,8 +85,8 @@ const LeftBtn = styled.p`
   font-size: 17px;
   font-weight: 600;
   cursor: pointer;
-  left: ${(props) => props.leftmove || '0'};
-  right: ${(props) => props.right || '0'};
+  left: ${(props) => props.$leftmove || '0'};
+  right: ${(props) => props.$right || '0'};
 `;
 
 const RightBtn = styled.p`
@@ -95,7 +95,7 @@ const RightBtn = styled.p`
   font-size: 17px;
   font-weight: 600;
   cursor: pointer;
-  right: ${(props) => props.right || '0'};
+  right: ${(props) => props.$right || '0'};
 `;
 const ListWrapper = styled.div`
   display: flex;

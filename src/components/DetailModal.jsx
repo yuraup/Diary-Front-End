@@ -1,7 +1,7 @@
 /* eslint-disable react/prop-types */
 import { useState } from 'react';
 import styled from 'styled-components';
-const DetailModal = ({ setIsModalOpen, imgSrc }) => {
+const DetailModal = ({ setIsModalOpen, diary }) => {
   const [isZoomed, setIsZoomed] = useState(false);
   const [zoomedImgSrc, setZoomedImgSrc] = useState('');
 
@@ -20,15 +20,13 @@ const DetailModal = ({ setIsModalOpen, imgSrc }) => {
       <ModalBackground onClick={() => setIsModalOpen(false)}>
         <ModalWrapper onClick={(e) => e.stopPropagation()}>
           <TextBox>
-            <h1>제목내용</h1>
-            <p>
-              일기내용일기내용일기내용일기내용일기내용일기내용일기내용일기내용일기내용일기내용일기내용일기내용일기내용
-            </p>
+            <h1>{diary?.title || '제목없음'}</h1>
+            <p>{diary?.content || '내용없음'}</p>
           </TextBox>
           <DiaryImg
-            src={imgSrc}
+            src={diary?.imgUrl}
             alt="일기 이미지"
-            onClick={(e) => toggleZoom(e.target.src)} // 클릭 시 이미지 소스 전달
+            onClick={(e) => toggleZoom(e.target.src)}
           />
         </ModalWrapper>
       </ModalBackground>

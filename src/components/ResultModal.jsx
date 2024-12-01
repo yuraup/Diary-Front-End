@@ -8,10 +8,10 @@ const ImageModal = ({ isOpen, onClose, imgSrc }) => {
   return (
     <AnimatePresence>
       <motion.div
-        initial={{ opacity: 0, y: 0 }} // 초기 상태: 아래에 위치하고 투명
-        animate={{ opacity: 1, y: 0 }} // 애니메이션 후: 제자리로 이동하고 불투명
-        exit={{ opacity: 0, y: -50 }} // 종료 시: 위로 이동하며 투명
-        transition={{ duration: 0.5 }} // 애니메이션 지속 시간: 0.5초
+        initial={{ opacity: 0, y: 0 }}
+        animate={{ opacity: 1, y: 0 }}
+        exit={{ opacity: 0, y: -50 }}
+        transition={{ duration: 0.5 }}
       >
         <ModalBackground onClick={onClose}>
           <ModalContent onClick={(e) => e.stopPropagation()}>

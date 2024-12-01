@@ -58,7 +58,7 @@ const DiaryResultPage = () => {
           <ImageModal
             isOpen={isModalOpen}
             onClose={() => setIsModalOpen(false)}
-            imgSrc={exResultImg}
+            imgSrc={transformedImgUrl || exResultImg}
           />
           <ButtonSection>
             <ActionButton onClick={handleSaveDiary}>일기 저장하기</ActionButton>

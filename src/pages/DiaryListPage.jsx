@@ -1,10 +1,10 @@
 import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { AnimatePresence, motion } from 'framer-motion';
 import styled from 'styled-components';
-import backHalfCircle from '../assets/BackHalfCircle.svg';
 import DetailModal from '../components/DetailModal';
 import { getDiaryList, getDetailDiary } from '../api/Diary';
-import { AnimatePresence, motion } from 'framer-motion';
+import backHalfCircle from '../assets/BackHalfCircle.svg';
 
 const DiaryListPage = () => {
   const navigate = useNavigate();
@@ -25,8 +25,9 @@ const DiaryListPage = () => {
   useEffect(() => {
     const fetchList = async () => {
       const list = await getDiaryList();
+      console.log('Diary List:', list); // 데이터 구조 확인
       if (list) {
-        setDiaryList(list);
+        setDiaryList(list); // 리스트 저장
       }
     };
     fetchList();
@@ -35,10 +36,10 @@ const DiaryListPage = () => {
   return (
     <AnimatePresence>
       <motion.div
-        initial={{ opacity: 0, y: 0 }} // 초기 상태: 아래에 위치하고 투명
-        animate={{ opacity: 1, y: 0 }} // 애니메이션 후: 제자리로 이동하고 불투명
-        exit={{ opacity: 0, y: -50 }} // 종료 시: 위로 이동하며 투명
-        transition={{ duration: 0.5 }} // 애니메이션 지속 시간: 0.5초
+        initial={{ opacity: 0, y: 0 }}
+        animate={{ opacity: 1, y: 0 }}
+        exit={{ opacity: 0, y: -50 }}
+        transition={{ duration: 0.5 }}
       >
         <DiaryListWrapper>
           {isModalOpen && (
@@ -65,7 +66,7 @@ const DiaryListPage = () => {
                   onClick={() => openModal(diary.diaryId)}
                 >
                   <p>{diary.title}</p>
-                  <ListImg alt="일기 이미지" src={diary.imgURL} />
+                  <ListImg src={diary.imgUrl} alt="일기 이미지" />
                 </ListBox>
               ))}
             </ListContainer>
@@ -175,7 +176,8 @@ const ListImg = styled.img`
   height: 120px;
   margin: 10px 0;
   border-radius: 20px;
-  background: #d9d9d9;
+  object-fit: cover;
+  background-color: #d9d9d9;
 `;
 
 export default DiaryListPage;

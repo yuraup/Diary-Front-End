@@ -1,41 +1,41 @@
 import { useEffect, useState } from 'react';
-import styled from 'styled-components';
+import styled, { keyframes } from 'styled-components';
+import cryingCat from '../assets/CryingCat.svg';
 import happyCat from '../assets/LoveCat.svg';
+
 const Loading = () => {
-  const [isRotated, setIsRotated] = useState(false);
+  const [isHappy, setIsHappy] = useState(true);
+
   useEffect(() => {
-    const timer = setTimeout(() => {
-      setIsRotated(!isRotated);
-    }, 1000);
-    return () => {
-      clearTimeout(timer);
-    };
-  }, [isRotated]);
+    const interval = setInterval(() => {
+      setIsHappy((prev) => !prev);
+    }, 2000);
+    return () => clearInterval(interval);
+  }, []);
 
   return (
-    <Backgroud>
+    <Background>
+      <StyledText>당신의 하루를 긍정적으로 바꾸는 중입니다</StyledText>
       <LoadingContainer>
-        <StyledText>당신의 하루를 긍정적으로 바꾸는 중입니다</StyledText>
-        <StyledText>· · ·</StyledText>
-        <StyledHappyCat
-          src={happyCat}
-          alt="고양이이미지"
-          isrotated={isRotated ? 1 : 0}
-        />
+        {isHappy ? (
+          <HappyCat src={happyCat} alt="행복한 고양이 이미지" />
+        ) : (
+          <CryingCat src={cryingCat} alt="우는 고양이 이미지" />
+        )}
       </LoadingContainer>
-    </Backgroud>
+    </Background>
   );
 };
 
-const Backgroud = styled.div`
+const Background = styled.div`
   position: fixed;
   top: 0;
   left: 0;
   bottom: 0;
   right: 0;
-  background-color: rgba(70, 70, 70, 0.7);
-  padding: auto;
+  background-color: rgba(44, 44, 44, 0.9);
   display: flex;
+  flex-direction: column;
   justify-content: center;
   align-items: center;
   z-index: 120;
@@ -49,23 +49,39 @@ const LoadingContainer = styled.div`
   align-items: center;
 `;
 
-const StyledHappyCat = styled.img`
-  transform: ${(props) => (props.isrotated ? 'rotate(0)' : 'rotate(30deg)')};
-  transition: transform 500ms ease;
-  width: 160px;
-  height: auto;
-  margin-bottom: 3%;
+const StyledText = styled.div`
+  position: absolute;
+  top: 30%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  font-size: 30px;
+  font-weight: 600;
+  line-height: 33px;
+  color: #fff;
+  text-align: center;
 `;
 
-const StyledText = styled.div`
-  font-size: 30px;
-  font-weight: 400;
-  line-height: 33px;
-  color: white;
-  :nth-child(2) {
-    margin-top: 26px;
-    margin-bottom: 200px;
+const scaleAnimation = keyframes`
+  0%, 100% {
+    transform: scale(1);
   }
+  50% {
+    transform: scale(1.2);
+  }
+`;
+
+const ImageBase = styled.img`
+  animation: ${scaleAnimation} 2s ease-in-out infinite;
+`;
+
+const HappyCat = styled(ImageBase)`
+  width: 160px;
+  height: 160px;
+`;
+
+const CryingCat = styled(ImageBase)`
+  width: 110px;
+  height: 110px;
 `;
 
 export default Loading;

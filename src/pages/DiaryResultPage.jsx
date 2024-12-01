@@ -4,16 +4,16 @@ import styled from 'styled-components';
 import ImageModal from '../components/ResultModal';
 import exResultImg from '../assets/ex_result.png';
 import html2canvas from 'html2canvas';
+import { AnimatePresence, motion } from 'framer-motion';
 
 const DiaryResultPage = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
+
   const screenshotRef = useRef(null);
   const navigate = useNavigate();
-
   const location = useLocation();
-  // TransformCompletePage에서 전달된 데이터
   const { title, transformedContent, transformedImgUrl } = location.state || {};
-  console.log('작성하는페이지:', title, transformedContent, transformedImgUrl);
+
   const handleSaveDiary = async () => {
     if (screenshotRef.current) {
       const canvas = await html2canvas(screenshotRef.current);
@@ -34,32 +34,41 @@ const DiaryResultPage = () => {
     }
   };
   return (
-    <ResultContainer ref={screenshotRef}>
-      <h1>{title || '제목 없음'}</h1>
-      <ContentSection>
-        <TextSection>
-          <p>{transformedContent || '일기 내용이 없습니다. '}</p>
-        </TextSection>
-        <ImageSection>
-          <GeneratedImage
-            src={transformedImgUrl}
-            alt="생성된 이미지"
-            onClick={() => setIsModalOpen(true)}
+    <AnimatePresence>
+      <motion.div
+        initial={{ opacity: 0, y: 0 }}
+        animate={{ opacity: 1, y: 0 }}
+        exit={{ opacity: 0, y: -50 }}
+        transition={{ duration: 0.5 }}
+      >
+        <ResultContainer ref={screenshotRef}>
+          <h1>{title || '제목 없음'}</h1>
+          <ContentSection>
+            <TextSection>
+              <p>{transformedContent || '일기 내용이 없습니다. '}</p>
+            </TextSection>
+            <ImageSection>
+              <GeneratedImage
+                src={transformedImgUrl}
+                alt="생성된 이미지"
+                onClick={() => setIsModalOpen(true)}
+              />
+            </ImageSection>
+          </ContentSection>
+          <ImageModal
+            isOpen={isModalOpen}
+            onClose={() => setIsModalOpen(false)}
+            imgSrc={exResultImg}
           />
-        </ImageSection>
-      </ContentSection>
-      <ImageModal
-        isOpen={isModalOpen}
-        onClose={() => setIsModalOpen(false)}
-        imgSrc={exResultImg}
-      />
-      <ButtonSection>
-        <ActionButton onClick={handleSaveDiary}>일기 저장하기</ActionButton>
-        <ActionButton onClick={() => navigate('/diary-list')}>
-          모두의 일기장 보기
-        </ActionButton>
-      </ButtonSection>
-    </ResultContainer>
+          <ButtonSection>
+            <ActionButton onClick={handleSaveDiary}>일기 저장하기</ActionButton>
+            <ActionButton onClick={() => navigate('/diary-list')}>
+              모두의 일기장 보기
+            </ActionButton>
+          </ButtonSection>
+        </ResultContainer>
+      </motion.div>
+    </AnimatePresence>
   );
 };
 

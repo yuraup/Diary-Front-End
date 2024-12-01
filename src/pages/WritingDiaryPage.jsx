@@ -3,9 +3,9 @@ import styled from 'styled-components';
 import { useNavigate } from 'react-router-dom';
 import Loading from '../components/Loading';
 import CryingCat from '../assets/CryingCat.svg';
-import FearCat from '../assets/FearCat.svg';
 import JoyCat from '../assets/JoyCat.svg';
 import SmilingCat from '../assets/SmilingCat.svg';
+import { AnimatePresence, motion } from 'framer-motion';
 import { transformDiary } from '../api/Diary';
 
 const WritingDiaryPage = () => {
@@ -17,7 +17,7 @@ const WritingDiaryPage = () => {
   // Emoji 애니메이션
   const [currentEmoji, setCurrentEmoji] = useState(0);
   const [fade, setFade] = useState(false);
-  const emojiImages = [CryingCat, FearCat, JoyCat, SmilingCat];
+  const emojiImages = [CryingCat, JoyCat, SmilingCat];
 
   useEffect(() => {
     const interval = setInterval(() => {
@@ -44,17 +44,11 @@ const WritingDiaryPage = () => {
     setLoading(true);
 
     try {
-      await new Promise((resolve) => setTimeout(resolve, 2000));
-
-      console.log('보내는 Diary Title:', title);
-      console.log('보내는 Diary Content:', content);
-
+      await new Promise((resolve) => setTimeout(resolve, 0));
       const res = await transformDiary(content);
       const transformedContent = res.data.content;
       const transformedImgUrl = res.data.imgUrl;
 
-      console.log('변환된 내용:', transformedContent);
-      console.log('이미지 URL:', transformedImgUrl);
       navigate('/loading-complete', {
         state: { title, transformedContent, transformedImgUrl },
       });
@@ -66,29 +60,36 @@ const WritingDiaryPage = () => {
   };
 
   return (
-    <>
-      {loading && <Loading />}
-      <FullPageContainer>
-        <EmojiContainer fade={fade}>
-          <Emoji src={emojiImages[currentEmoji]} alt="감정 이모지" />
-        </EmojiContainer>
-        <Header>오늘의 하루를 감정적으로 정리해 보세요</Header>
-        <WritingBox>
-          <Title
-            value={title}
-            onChange={handleTitleChange}
-            placeholder="제목"
-            type="text"
-          />
-          <TextArea
-            value={content}
-            onChange={handleChange}
-            placeholder="나의 오늘 하루는..."
-          />
-        </WritingBox>
-        <SubmitButton onClick={handleSubmit}>작성 완료</SubmitButton>
-      </FullPageContainer>
-    </>
+    <AnimatePresence>
+      <motion.div
+        initial={{ opacity: 0, y: 0 }}
+        animate={{ opacity: 1, y: 0 }}
+        exit={{ opacity: 0, y: -50 }}
+        transition={{ duration: 0.5 }}
+      >
+        {loading && <Loading />}
+        <FullPageContainer>
+          <EmojiContainer fade={fade}>
+            <Emoji src={emojiImages[currentEmoji]} alt="감정 이모지" />
+          </EmojiContainer>
+          <Header>오늘의 하루를 감정적으로 정리해 보세요</Header>
+          <WritingBox>
+            <Title
+              value={title}
+              onChange={handleTitleChange}
+              placeholder="제목"
+              type="text"
+            />
+            <TextArea
+              value={content}
+              onChange={handleChange}
+              placeholder="나의 오늘 하루는..."
+            />
+          </WritingBox>
+          <SubmitButton onClick={handleSubmit}>작성 완료</SubmitButton>
+        </FullPageContainer>
+      </motion.div>
+    </AnimatePresence>
   );
 };
 

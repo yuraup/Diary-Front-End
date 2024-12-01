@@ -1,6 +1,8 @@
 /* eslint-disable react/prop-types */
 import { useState } from 'react';
 import styled from 'styled-components';
+import { AnimatePresence, motion } from 'framer-motion';
+
 const DetailModal = ({ setIsModalOpen, diary }) => {
   const [isZoomed, setIsZoomed] = useState(false);
   const [zoomedImgSrc, setZoomedImgSrc] = useState('');
@@ -11,26 +13,33 @@ const DetailModal = ({ setIsModalOpen, diary }) => {
   };
 
   return (
-    <>
-      {isZoomed && (
-        <ZoomedImageWrapper onClick={() => setIsZoomed(false)}>
-          <ZoomedImage src={zoomedImgSrc} alt="확대된 이미지" />
-        </ZoomedImageWrapper>
-      )}
-      <ModalBackground onClick={() => setIsModalOpen(false)}>
-        <ModalWrapper onClick={(e) => e.stopPropagation()}>
-          <TextBox>
-            <h1>{diary?.title || '제목없음'}</h1>
-            <p>{diary?.content || '내용없음'}</p>
-          </TextBox>
-          <DiaryImg
-            src={diary?.imgUrl}
-            alt="일기 이미지"
-            onClick={(e) => toggleZoom(e.target.src)}
-          />
-        </ModalWrapper>
-      </ModalBackground>
-    </>
+    <AnimatePresence>
+      <motion.div
+        initial={{ opacity: 0, y: 0 }} // 초기 상태: 아래에 위치하고 투명
+        animate={{ opacity: 1, y: 0 }} // 애니메이션 후: 제자리로 이동하고 불투명
+        exit={{ opacity: 0, y: -50 }} // 종료 시: 위로 이동하며 투명
+        transition={{ duration: 0.5 }} // 애니메이션 지속 시간: 0.5초
+      >
+        {isZoomed && (
+          <ZoomedImageWrapper onClick={() => setIsZoomed(false)}>
+            <ZoomedImage src={zoomedImgSrc} alt="확대된 이미지" />
+          </ZoomedImageWrapper>
+        )}
+        <ModalBackground onClick={() => setIsModalOpen(false)}>
+          <ModalWrapper onClick={(e) => e.stopPropagation()}>
+            <TextBox>
+              <h1>{diary?.title || '제목없음'}</h1>
+              <p>{diary?.content || '내용없음'}</p>
+            </TextBox>
+            <DiaryImg
+              src={diary?.imgUrl}
+              alt="일기 이미지"
+              onClick={(e) => toggleZoom(e.target.src)}
+            />
+          </ModalWrapper>
+        </ModalBackground>{' '}
+      </motion.div>
+    </AnimatePresence>
   );
 };
 

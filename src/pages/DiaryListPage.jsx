@@ -4,6 +4,7 @@ import styled from 'styled-components';
 import backHalfCircle from '../assets/BackHalfCircle.svg';
 import DetailModal from '../components/DetailModal';
 import { getDiaryList, getDetailDiary } from '../api/Diary';
+import { AnimatePresence, motion } from 'framer-motion';
 
 const DiaryListPage = () => {
   const navigate = useNavigate();
@@ -32,42 +33,54 @@ const DiaryListPage = () => {
   }, []);
 
   return (
-    <DiaryListWrapper>
-      {isModalOpen && (
-        <DetailModal setIsModalOpen={setIsModalOpen} diary={selectedDiary} />
-      )}
-      <LeftBtn
-        $leftmove="15%"
-        onClick={() => {
-          navigate('/');
-        }}
+    <AnimatePresence>
+      <motion.div
+        initial={{ opacity: 0, y: 0 }} // 초기 상태: 아래에 위치하고 투명
+        animate={{ opacity: 1, y: 0 }} // 애니메이션 후: 제자리로 이동하고 불투명
+        exit={{ opacity: 0, y: -50 }} // 종료 시: 위로 이동하며 투명
+        transition={{ duration: 0.5 }} // 애니메이션 지속 시간: 0.5초
       >
-        뒤로 가기
-      </LeftBtn>
-      <ListWrapper>
-        <BackHalfCircle src={backHalfCircle} alt="반원배경이미지" />
-        <h1>모두의 일기장</h1>
-        <ListContainer>
-          {diaryList.map((diary) => (
-            <ListBox
-              key={diary.diaryId}
-              onClick={() => openModal(diary.diaryId)}
-            >
-              <p>{diary.title}</p>
-              <ListImg alt="일기 이미지" src={diary.imgURL} />
-            </ListBox>
-          ))}
-        </ListContainer>
-      </ListWrapper>
-      <RightBtn
-        $right="15%"
-        onClick={() => {
-          navigate('/write');
-        }}
-      >
-        나도 작성하기
-      </RightBtn>
-    </DiaryListWrapper>
+        <DiaryListWrapper>
+          {isModalOpen && (
+            <DetailModal
+              setIsModalOpen={setIsModalOpen}
+              diary={selectedDiary}
+            />
+          )}
+          <LeftBtn
+            $leftmove="15%"
+            onClick={() => {
+              navigate('/');
+            }}
+          >
+            뒤로 가기
+          </LeftBtn>
+          <ListWrapper>
+            <BackHalfCircle src={backHalfCircle} alt="반원배경이미지" />
+            <h1>모두의 일기장</h1>
+            <ListContainer>
+              {diaryList.map((diary) => (
+                <ListBox
+                  key={diary.diaryId}
+                  onClick={() => openModal(diary.diaryId)}
+                >
+                  <p>{diary.title}</p>
+                  <ListImg alt="일기 이미지" src={diary.imgURL} />
+                </ListBox>
+              ))}
+            </ListContainer>
+          </ListWrapper>
+          <RightBtn
+            $right="15%"
+            onClick={() => {
+              navigate('/write');
+            }}
+          >
+            나도 작성하기
+          </RightBtn>
+        </DiaryListWrapper>
+      </motion.div>
+    </AnimatePresence>
   );
 };
 

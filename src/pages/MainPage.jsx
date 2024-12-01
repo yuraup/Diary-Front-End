@@ -5,47 +5,57 @@ import backCircle from '../assets/BackCircle.svg';
 import arrow from '../assets/Arrow.svg';
 import dottedLine from '../assets/DottedLine.svg';
 import { useNavigate } from 'react-router-dom';
+import { AnimatePresence, motion } from 'framer-motion';
 
 const MainPage = () => {
   const navigate = useNavigate();
   return (
-    <MainContainer>
-      <BackgroundCircle src={backCircle} alt="배경이미지" />
-      <DecoSection>
-        <TextContainer>
-          <h1>하루의 미소</h1>
-          <h2>Positive Diary</h2>
-          <p>
-            긍정의 문장으로만 이루어진 일기장을 받아보세요!
-            <br />
-            부정적인 모든 감정을 AI가 캐치해 당신의 하루를 아름답게 기억할 수
-            있게 만들어 줄 거예요!
-          </p>
-        </TextContainer>
-        <EmojiContainer>
-          <Arrow src={arrow} alt="화살표" />
-          <DottedLine src={dottedLine} alt="점선" />
-          <Emoji src={sad} alt="슬픈 이모지" size="210px" mt="47px" />
-          <Emoji src={happy} alt="행복한 이모지" size="300px" />
-        </EmojiContainer>
-      </DecoSection>
-      <ButtonSection>
-        <Button
-          onClick={() => {
-            navigate('/diary-list');
-          }}
-        >
-          모두의 일기장
-        </Button>
-        <Button
-          onClick={() => {
-            navigate('/write');
-          }}
-        >
-          일기 작성
-        </Button>
-      </ButtonSection>
-    </MainContainer>
+    <AnimatePresence>
+      <motion.div
+        initial={{ opacity: 0, y: 0 }}
+        animate={{ opacity: 1, y: 0 }}
+        exit={{ opacity: 0, y: -50 }}
+        transition={{ duration: 0.5 }}
+      >
+        <MainContainer>
+          <BackgroundCircle src={backCircle} alt="배경이미지" />
+          <DecoSection>
+            <TextContainer>
+              <h1>하루의 미소</h1>
+              <h2>Positive Diary</h2>
+              <p>
+                긍정의 문장으로만 이루어진 일기장을 받아보세요!
+                <br />
+                부정적인 모든 감정을 AI가 캐치해 당신의 하루를 아름답게 기억할
+                수 있게 만들어 줄 거예요!
+              </p>
+            </TextContainer>
+            <EmojiContainer>
+              <Arrow src={arrow} alt="화살표" />
+              <DottedLine src={dottedLine} alt="점선" />
+              <Emoji src={sad} alt="슬픈 이모지" size="210px" mt="47px" />
+              <Emoji src={happy} alt="행복한 이모지" size="300px" />
+            </EmojiContainer>
+          </DecoSection>
+          <ButtonSection>
+            <Button
+              onClick={() => {
+                navigate('/diary-list');
+              }}
+            >
+              모두의 일기장
+            </Button>
+            <Button
+              onClick={() => {
+                navigate('/write');
+              }}
+            >
+              일기 작성
+            </Button>
+          </ButtonSection>
+        </MainContainer>
+      </motion.div>
+    </AnimatePresence>
   );
 };
 

@@ -2,18 +2,16 @@ import styled from 'styled-components';
 import { useNavigate, useLocation } from 'react-router-dom';
 import LoveCat from '../assets/LoveCat.svg';
 import HalfCircleBackground from '../assets/bottomHalfCircle.png';
+import { AnimatePresence, motion } from 'framer-motion';
 import { createDiary } from '../api/Diary';
 
 const TransformationCompletePage = () => {
   const navigate = useNavigate();
   const location = useLocation();
-
-  // WritingDiaryPage에서 전달된 데이터
   const { title, transformedContent, transformedImgUrl } = location.state || {};
 
   const handleConfirm = async () => {
     try {
-      // 데이터를 DiaryResultPage로 전달
       navigate('/result', {
         state: { title, transformedContent, transformedImgUrl },
       });
@@ -25,11 +23,20 @@ const TransformationCompletePage = () => {
     }
   };
   return (
-    <CompleteContainer>
-      <h1>변환이 완료되었습니다</h1>
-      <Emoji src={LoveCat} alt="변환완료" />
-      <ConfirmButton onClick={handleConfirm}>확인해 보기</ConfirmButton>
-    </CompleteContainer>
+    <AnimatePresence>
+      <motion.div
+        initial={{ opacity: 0, y: 0 }}
+        animate={{ opacity: 1, y: 0 }}
+        exit={{ opacity: 0, y: -50 }}
+        transition={{ duration: 0.5 }}
+      >
+        <CompleteContainer>
+          <h1>변환이 완료되었습니다</h1>
+          <Emoji src={LoveCat} alt="변환완료" />
+          <ConfirmButton onClick={handleConfirm}>확인해 보기</ConfirmButton>
+        </CompleteContainer>
+      </motion.div>
+    </AnimatePresence>
   );
 };
 

@@ -1,19 +1,28 @@
 import styled from 'styled-components';
 import { useNavigate } from 'react-router-dom';
 import LoveCat from '../assets/LoveCat.svg';
+import { AnimatePresence, motion } from 'framer-motion';
 
 const DiarySaveCompletePage = () => {
   const navigate = useNavigate();
 
   return (
-    <SaveCompleteContainer>
-      <Emoji src={LoveCat} alt="저장완료" />
-      <Message>오늘의 일기가 이미지로 저장됐어요!</Message>
-      <ConfirmButton onClick={() => navigate('/')}>확인</ConfirmButton>
-    </SaveCompleteContainer>
+    <AnimatePresence>
+      <motion.div
+        initial={{ opacity: 0, y: 0 }}
+        animate={{ opacity: 1, y: 0 }}
+        exit={{ opacity: 0, y: -50 }}
+        transition={{ duration: 0.5 }}
+      >
+        <SaveCompleteContainer>
+          <Emoji src={LoveCat} alt="저장완료" />
+          <Message>오늘의 일기가 이미지로 저장됐어요!</Message>
+          <ConfirmButton onClick={() => navigate('/')}>확인</ConfirmButton>
+        </SaveCompleteContainer>
+      </motion.div>
+    </AnimatePresence>
   );
 };
-
 
 const SaveCompleteContainer = styled.div`
   width: 100vw;

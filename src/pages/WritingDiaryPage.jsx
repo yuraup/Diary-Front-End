@@ -6,6 +6,7 @@ import CryingCat from '../assets/CryingCat.svg';
 import FearCat from '../assets/FearCat.svg';
 import JoyCat from '../assets/JoyCat.svg';
 import SmilingCat from '../assets/SmilingCat.svg';
+import { transformDiary } from '../api/Diary';
 
 const WritingDiaryPage = () => {
   const navigate = useNavigate();
@@ -45,10 +46,18 @@ const WritingDiaryPage = () => {
     try {
       await new Promise((resolve) => setTimeout(resolve, 2000));
 
-      console.log('Diary Title:', title);
-      console.log('Diary Content:', content);
+      console.log('보내는 Diary Title:', title);
+      console.log('보내는 Diary Content:', content);
 
-      navigate('/loading-complete');
+      const res = await transformDiary(content);
+      const transformedContent = res.data.content;
+      const transformedImgUrl = res.data.imgUrl;
+
+      console.log('변환된 내용:', transformedContent);
+      console.log('이미지 URL:', transformedImgUrl);
+      navigate('/loading-complete', {
+        state: { title, transformedContent, transformedImgUrl },
+      });
     } catch (error) {
       console.error('API 호출 실패:', error);
     } finally {

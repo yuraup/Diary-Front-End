@@ -1,8 +1,8 @@
 import { useState, useRef } from 'react';
+import { useLocation, useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 import ImageModal from '../components/ResultModal';
-import exResultImg from '../assets/ex_result.png'; 
-import { useNavigate } from 'react-router-dom';
+import exResultImg from '../assets/ex_result.png';
 import html2canvas from 'html2canvas';
 
 const DiaryResultPage = () => {
@@ -10,9 +10,10 @@ const DiaryResultPage = () => {
   const screenshotRef = useRef(null);
   const navigate = useNavigate();
 
-  const diaryText =
-    'AI가 긍정적으로 변환한 일기 내용. 변환된 일기가 여기에 표시됨. ex) 오늘 하루는 정말 행복하고 보람찬 하루였습니다. 오늘의 일기입니다.';
-
+  const location = useLocation();
+  // TransformCompletePage에서 전달된 데이터
+  const { title, transformedContent, transformedImgUrl } = location.state || {};
+  console.log('작성하는페이지:', title, transformedContent, transformedImgUrl);
   const handleSaveDiary = async () => {
     if (screenshotRef.current) {
       const canvas = await html2canvas(screenshotRef.current);
@@ -34,14 +35,14 @@ const DiaryResultPage = () => {
   };
   return (
     <ResultContainer ref={screenshotRef}>
-      <h1>긍정적으로 변환된 일기</h1>
+      <h1>{title || '제목 없음'}</h1>
       <ContentSection>
         <TextSection>
-          <p>{diaryText}</p>
+          <p>{transformedContent || '일기 내용이 없습니다. '}</p>
         </TextSection>
         <ImageSection>
           <GeneratedImage
-            src={exResultImg}
+            src={transformedImgUrl}
             alt="생성된 이미지"
             onClick={() => setIsModalOpen(true)}
           />
@@ -53,9 +54,7 @@ const DiaryResultPage = () => {
         imgSrc={exResultImg}
       />
       <ButtonSection>
-        <ActionButton onClick={handleSaveDiary}>
-          일기 저장하기
-        </ActionButton>
+        <ActionButton onClick={handleSaveDiary}>일기 저장하기</ActionButton>
         <ActionButton onClick={() => navigate('/diary-list')}>
           모두의 일기장 보기
         </ActionButton>
@@ -93,7 +92,7 @@ const ContentSection = styled.div`
 `;
 
 const TextSection = styled.div`
-  flex: 1; 
+  flex: 1;
   text-align: justify;
   text-justify: inter-word;
 

@@ -7,13 +7,14 @@ export default defineConfig(({ mode }) => {
   return {
     plugins: [react()],
     server: {
-      proxy: {
-        '/api': {
-          target: `${env.VITE_BASE_URL}`,
-          changeOrigin: true,
-          rewrite: (path) => path.replace(/^\/api/, ''),
-        },
-      },
+      //local test
+      // proxy: {
+      //   '/api': {
+      //     target: `${env.VITE_BASE_URL}`,
+      //     changeOrigin: true,
+      //     rewrite: (path) => path.replace(/^\/api/, ''),
+      //   },
+      // },
     },
   };
 });

@@ -3,11 +3,12 @@ import axios from 'axios';
 // Axios 인스턴스
 const api = axios.create({
   withCredentials: true,
-  baseURL: '/api',
+  baseURL: import.meta.env.VITE_BASE_URL,
 });
 
 // 리스트 가져오기
 export const getDiaryList = async () => {
+  console.log('API BASE URL:', import.meta.env.VITE_BASE_URL);
   try {
     const res = await api.get('/diary');
     return res.data.data;
